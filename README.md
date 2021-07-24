@@ -1,0 +1,2 @@
+# tictactic
+odin project tictactoe
