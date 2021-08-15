@@ -10,6 +10,14 @@
 </head>
 <body>
     <div class='outside'>
+        <h1>Tic-Tac-Toe</h1>
+    <div class='header'>
+        <div class='x'><label for="x_name">Enter your name: </label><input type="text" id="x_name" name="x_name" value="X" class='p1input'></div>
+        <div class='o'><label for="o_name">Enter your name: </label><input type="text" id="o_name" name="o_name" value="O" class='p2input'></div>
+        
+    </div>
+    <div><button class='restart'>Start / Restart</button></div>
+    <!-- <div class='display'>Welcome!</div> -->
     <div class='inside'>
         <div class= "cell cell1 top left" data-id='00'></div>
         <div class= "cell cell2 top" data-id='01'></div>
@@ -21,6 +29,12 @@
         <div class= "cell cell8 bottom" data-id='21'></div>
         <div class= "cell cell9 bottom right" data-id='22'></div>
     </div></div>
+<div class="modal">
+    <div class="modal-content">
+        <span class="close-button">×</span>
+        <h1>Hello, I am a modal!</h1>
+    </div>
+</div>
 </body>
 <script src="script.js"></script>
 </html>

@@ -4,9 +4,9 @@
 
 
 let gameboard = (() => {
-    let board = [['X',null,null],
-            ['O',null,'O'],
-            ['X',null,null]];
+    let board = [[null,null,null],
+    [null,null,null],
+    [null,null,null]];
 
     let getBoard = () => board;
 
@@ -14,7 +14,12 @@ let gameboard = (() => {
         return board[pos1][pos2] === null
     }
 
-    let cells = document.querySelectorAll(".cell")
+    let reset = () => {
+        board = [[null,null,null],
+        [null,null,null],
+        [null,null,null]];
+        render()
+    }
 
     let render = () => {
         cells.forEach( cell => {
@@ -23,24 +28,51 @@ let gameboard = (() => {
         })
     }
 
-    
+    let cells = document.querySelectorAll(".cell")
+
     let pickCell = () => {
         cells.forEach(cell => {
-            cell.addEventListener('click', () => console.log(cell))
+            cell.addEventListener('click', selector)
         })
     }
 
-    let printCell = () => {
-        console.log()
+    let tieGame = () => {
+        let flattenedBoard = board.flat()
+        return flattenedBoard.every(cell => cell != null)
     }
 
-    let postCell = () => {
-        cell
-        if (cell.textContent !== 'X' && cell.textContent !== 'O') {
-            cell.textContent = game.currentPlayer.getSymbol()
-        }
 
+    let selector = (e) => {
+        cell = e.target
+        data = cell.getAttribute('data-id')
+                if (posIsFree(data[0],data[1])) {
+
+                    if (game.currentPlayer.getSymbol() === 'X') {
+                        board[data[0]][data[1]] = 'X'
+                        render()
+                        if (gameboard.isWon()) {
+                            game.displayWinner(`${game.showName()} wins!`)
+                        }
+                        if (tieGame()) {
+                            game.displayWinner('Tie Game')
+                        }
+                        game.switchPlayer()
+                    } else {
+                        board[data[0]][data[1]] = 'O'
+                        render()
+                        if (gameboard.isWon()) {
+                            game.displayWinner(`${game.showName()} wins!`)
+                        }
+                        if (tieGame()) {
+                            game.displayWinner('Tie Game')
+                        }
+                        game.switchPlayer()
+                }} else {{
+                    console.log('try again')
+                }
+            }
     }
+
 
 
     let updateBoard = (pos1,pos2,symbol) => {
@@ -66,8 +98,16 @@ let gameboard = (() => {
 
         let value = posToCheck.some(posArray => {
             if (posArray.every( pos => pos === 'X') === true) {
+
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', selector)
+                })
                 return true
             } else if (posArray.every( pos => pos === 'O') === true) {
+                
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', selector)
+                })
                 return true }
         })
             
@@ -76,7 +116,7 @@ let gameboard = (() => {
     }
 
 
-    return {getBoard,updateBoard,isWon,posIsFree,render,pickCell}
+    return {isWon,pickCell,reset}
 })()
 
 
@@ -93,20 +133,81 @@ let player = (name,symbol) => {
 
 
 let game = (() => {
+
+    p1Input = document.querySelector('.p1input')
+    p2Input = document.querySelector('.p2input')
+
     let player1 = player('player1','X');
-    let player2 = player('player1','O');
-    let currentPlayer = player1;
+    let player2 = player('player2','O');
+    let currentPlayer = player1
+ 
+    let getCurrentPlayer = () => {
+        return currentPlayer
+    }
 
     let play = () => {
         gameboard.pickCell()
 
     }
 
+    let showName = () => {
+        if (game.currentPlayer === game.player1) {
+            return p1Input.value
+        } else {
+            return p2Input.value
+        }
+    }
+
+    let displayWinner = (message) => {
+        modal.modalContent.textContent = message
+        modal.toggleModal()
+    }
+
+    let restartBtn = document.querySelector('.restart')
+    restartBtn.addEventListener('click', restart)
+
+    function restart() {
+        game.currentPlayer = game.player1;
+        gameboard.reset()
+        game.play()
+    }
+
+    let switchPlayer = () => {
+        if (game.currentPlayer === game.player1) {
+            game.currentPlayer = game.player2
+        } else {
+            game.currentPlayer = game.player1
+        }
+    }
+
+
 
    
-    return {play,currentPlayer}
+    return {play,currentPlayer,switchPlayer,player1,player2,restartBtn,displayWinner,p1Input,showName}
 
 })()
 
+// game.play()
 
+let modal = (() => {
+    const modal = document.querySelector(".modal");
+    const modalContent = modal.querySelector('h1')
+    const trigger = document.querySelector(".trigger");
+    const closeButton = document.querySelector(".close-button");
+
+    function toggleModal() {
+        modal.classList.toggle("show-modal");
+    }
+
+    function windowOnClick(event) {
+        if (event.target === modal) {
+            toggleModal();
+        }
+    }
+
+    closeButton.addEventListener("click", toggleModal);
+    window.addEventListener("click", windowOnClick);
+
+    return {toggleModal,windowOnClick,modalContent}
+})()
 
