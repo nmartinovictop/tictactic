@@ -26,12 +26,29 @@ let gameboard = (() => {
     
     let pickCell = () => {
         cells.forEach(cell => {
-            cell.addEventListener('click', () => console.log('click'))
+            cell.addEventListener('click', () => console.log(cell))
         })
     }
 
+    let printCell = () => {
+        console.log()
+    }
+
+    let postCell = () => {
+        cell
+        if (cell.textContent !== 'X' && cell.textContent !== 'O') {
+            cell.textContent = game.currentPlayer.getSymbol()
+        }
+
+    }
+
+
     let updateBoard = (pos1,pos2,symbol) => {
-        board[pos1][pos2] = symbol
+        if (board[pos1][pos2] === null) {
+        board[pos1][pos2] = symbol 
+        } else {
+            console.log('this position is already taken')
+        }
     }
     
 
@@ -76,21 +93,18 @@ let player = (name,symbol) => {
 
 
 let game = (() => {
-    let player1 = ('player1','X');
-    let player2 = ('player1','O');
-    let currentPlayer = 'X';
-
+    let player1 = player('player1','X');
+    let player2 = player('player1','O');
+    let currentPlayer = player1;
 
     let play = () => {
         gameboard.pickCell()
-        while (gameboard.isWon() === false) {
-            console.log(`it is ${currentPlayer} turn.  Please click on a square`)
-        
-        }
+
     }
 
+
    
-    return {play}
+    return {play,currentPlayer}
 
 })()
 
