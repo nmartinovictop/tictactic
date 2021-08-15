@@ -1,0 +1,44 @@
+.outside {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh
+}
+
+.inside {
+    display: flex;
+    flex-wrap: wrap;
+    height: 600px;
+    width: 600px
+}
+
+.cell {
+    
+    width: 33%;
+    height: 33%;
+}
+
+.top {
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.middle {
+    border: 1px solid black;
+
+}
+
+.bottom {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.left {
+    border-left: none
+}
+
+.right {
+    border-right: none
+}
